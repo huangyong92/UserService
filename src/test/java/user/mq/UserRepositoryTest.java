@@ -64,14 +64,15 @@ public class UserRepositoryTest {
     public void updateUser() {
         User user = new User();
 
-        user.setUserId(1);
+
+        user.setUserId("1");
         user.setAvatar("https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2885559027,2082458421&fm=27&gp=0.jpg");
         userRepository.updateUser(user);
     }
 
     @Test
     public void updatePassword() {
-        userRepository.updatePassword(1, "1010");
+        userRepository.updatePassword("1", "1010");
     }
 
     @Test

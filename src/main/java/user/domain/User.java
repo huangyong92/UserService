@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = -2491518179662281133L;
-    private Integer userId;
+    private String userId;
 
     private String phone;
 

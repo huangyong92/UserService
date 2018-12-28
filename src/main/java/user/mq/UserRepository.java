@@ -29,7 +29,7 @@ public class UserRepository {
                 MqDeclare.WRITE_USER_KEY, "updateUser", user);
     }
 
-    public void updatePassword(Integer userId,
+    public void updatePassword(String userId,
                                String password) {
         User user = new User();
         user.setUserId(userId);
@@ -87,7 +87,7 @@ public class UserRepository {
 
         String obj = rabbitTemplateSend.convertSendAndReceive(MqDeclare.USER_EXCHANGE,
                 MqDeclare.READ_USER_KEY,
-                "findUserBycity", map);
+                "findUserByCity", map);
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeReference type = new TypeReference<List<User>>() {
