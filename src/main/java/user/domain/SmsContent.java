@@ -1,4 +1,4 @@
-package user.redis.sms;
+package user.domain;
 
 import lombok.Data;
 

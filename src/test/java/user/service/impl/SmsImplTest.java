@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import user.enums.SmsType;
-import user.redis.sms.SmsCodeRedis;
-import user.service.SmsService;
+import user.redis.impl.SmsCodeRedisImpl;
 
 import java.util.concurrent.*;
 
@@ -22,7 +21,7 @@ public class SmsImplTest {
     private SmsImpl mSmsService;
 
     @Autowired
-    private SmsCodeRedis smsCodeRedis;
+    private SmsCodeRedisImpl smsCodeRedis;
 
     private String mobile = "13575732183";
 

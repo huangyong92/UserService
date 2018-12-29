@@ -3,11 +3,12 @@ package user.service.impl;
 import com.montnets.mwgate.smsutil.SmsSendConn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import user.domain.SmsCodeEntity;
+import user.domain.SmsContent;
 import user.enums.ResultEnum;
 import user.enums.SmsError;
-import user.redis.sms.SmsCodeEntity;
-import user.redis.sms.SmsCodeRedis;
-import user.redis.sms.SmsContent;
+import user.redis.SmsCodeRedis;
+import user.redis.impl.SmsCodeRedisImpl;
 import user.service.SmsService;
 import user.util.SmsContentUtil;
 import user.util.SmsUtil;
@@ -16,6 +17,13 @@ import user.util.TimeUtil;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 实现验证码逻辑：
+ * 同一个手机号一天只能收取4条验证码
+ * 同一个手机号发送验证码最小间隔为5分钟
+ * 一个验证码15分钟内验证为有效
+ * 验证码存活24小时
+ */
 @Service
 public class SmsImpl implements SmsService {
 
@@ -66,7 +74,7 @@ public class SmsImpl implements SmsService {
         }
 
         //修改状态
-        mSmsCodeRedis.updateSmsCode(mobile, smsCodeEntity.sendTime, SmsCodeRedis.HasVeriry);
+        mSmsCodeRedis.updateSmsCode(mobile, smsCodeEntity.sendTime, SmsCodeRedisImpl.HasVeriry);
 
         return 0;
     }
@@ -100,14 +108,14 @@ public class SmsImpl implements SmsService {
 
     protected boolean isDayLimit(String mobile) {
         mSmsCodeEntityList =
-                mSmsCodeRedis.getOldSmsCodes(mobile, SmsCodeRedis.SMS_DAY_COUNT);
+                mSmsCodeRedis.getOldSmsCodes(mobile, SmsCodeRedisImpl.SMS_DAY_COUNT);
 
-        if (mSmsCodeEntityList.size() < SmsCodeRedis.SMS_DAY_COUNT) {
+        if (mSmsCodeEntityList.size() < SmsCodeRedisImpl.SMS_DAY_COUNT) {
             return false;
         }
 
         SmsCodeEntity compareCode =
-                mSmsCodeEntityList.get(SmsCodeRedis.SMS_DAY_COUNT - 1);
+                mSmsCodeEntityList.get(SmsCodeRedisImpl.SMS_DAY_COUNT - 1);
 
         long dayBeginTime = mTimeUtil.getDayBeginTime(new Date());
         return mTimeUtil.compareTime(compareCode.sendTime, dayBeginTime);

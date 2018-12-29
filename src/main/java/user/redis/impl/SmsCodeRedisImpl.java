@@ -1,10 +1,12 @@
-package user.redis.sms;
+package user.redis.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import user.domain.SmsCodeEntity;
+import user.redis.SmsCodeRedis;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -13,15 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 实现验证码逻辑：
- * 同一个手机号一天只能收取4条验证码
- * 同一个手机号发送验证码最小间隔为5分钟
- * 一个验证码15分钟内验证为有效
- * 验证码存活24小时
- */
 @Component
-public class SmsCodeRedis {
+public class SmsCodeRedisImpl implements SmsCodeRedis {
 
     public final static Integer SMS_DAY_COUNT = 4;
 
@@ -71,9 +66,9 @@ public class SmsCodeRedis {
 
         listOperations.leftPush(mobileKey, nowTimeStr);
         //由于list里面的值不能够设置过期，所以为了不累积过多的没用的验证码，可以手动删除
-//        if (listOperations.size(mobileKey) == SMS_DAY_COUNT + 1) {
-//            listOperations.rightPop(mobileKey);
-//        }
+        if (listOperations.size(mobileKey) == SMS_DAY_COUNT + 1) {
+            listOperations.rightPop(mobileKey);
+        }
 
         String smsCodeKey = getSmsCodeKey(mobile, nowTimeStr);
         Map<String, String> smsValue = new HashMap<>();
@@ -96,18 +91,6 @@ public class SmsCodeRedis {
 
     public List<SmsCodeEntity> getOldSmsCodes(String mobile, int count) {
         String mobileKey = getMobileKey(mobile);
-
-//        List<SmsCodeEntity> smsCodeList = new ArrayList<>();
-//        List<String> recentSmsTime = jedis.lrange(mobileKey, 0, count - 1);
-//
-//        for (String time :
-//                recentSmsTime) {
-//            SmsCodeEntity smsCodeEntity = getSmsCode(jedis, mobile, time);
-//            smsCodeList.add(smsCodeEntity);
-//        }
-//        if (jedis != null) {
-//            jedis.close();
-//        }
 
         List<SmsCodeEntity> smsCodeList = new ArrayList<>();
         List<String> recentSmsTime =

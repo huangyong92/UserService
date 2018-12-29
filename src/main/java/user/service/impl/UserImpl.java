@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.domain.User;
 import user.mq.UserRepository;
-import user.redis.user.UserRedis;
+import user.redis.UserRedis;
 import user.service.UserService;
 import user.util.KeyUtil;
 

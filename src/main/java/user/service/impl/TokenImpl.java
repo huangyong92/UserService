@@ -3,7 +3,7 @@ package user.service.impl;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import user.redis.token.BlackListRedis;
+import user.redis.BlackListRedis;
 import user.service.TokenService;
 import user.util.TokenUtil;
 

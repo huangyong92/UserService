@@ -2,7 +2,7 @@ package user.util;
 
 import org.springframework.stereotype.Component;
 import user.enums.SmsType;
-import user.redis.sms.SmsContent;
+import user.domain.SmsContent;
 
 
 @Component

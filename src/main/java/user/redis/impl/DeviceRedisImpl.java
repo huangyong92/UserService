@@ -1,10 +1,12 @@
-package user.redis.device;
+package user.redis.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
+import user.redis.DeviceRedis;
+import user.service.DeviceService;
 
 import javax.annotation.Resource;
 
@@ -13,7 +15,7 @@ import javax.annotation.Resource;
  * userId appId loginstatu
  */
 @Component
-public class DeviceRedis {
+public class DeviceRedisImpl implements DeviceRedis {
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -37,31 +39,9 @@ public class DeviceRedis {
         valueOperations.set(loginDeviceKey, deviceId);
 
         addDeviceToAll(userId, deviceId);
-
-//        String userDevicesKey = getUserDeviceSetKey(userId);
-//        valueOperations.set(userDevicesKey, deviceId);
     }
 
-//    public Set<String> getDeviceIds(String userId) {
-//        String deviceKey = getDeviceKey(userId);
-//        return setOperations.members(deviceKey);
-//    }
-
     public String getCurrentDevice(String userId) {
-//        Set<String> deviceIds = getDeviceIds(userId);
-
-//        String deviceKey = getDeviceKey(userId);
-//        Set<String> deviceIds = setOperations.members(deviceKey);
-//        for (String device :
-//                deviceIds) {
-//            String loginKey = getLoginStatuKey(userId, device);
-//            String loginStatu = valueOperations.get(loginKey);
-//
-//            if (loginStatu.equals(LoginEnum.LOGIN.getStatu())) {
-//                return device;
-//            }
-//        }
-
         String loginDeviceKey = getLoginDeviceStrKey(userId);
         return valueOperations.get(loginDeviceKey);
     }
@@ -70,11 +50,4 @@ public class DeviceRedis {
         String userDevicesKey = getUserDeviceSetKey(userId);
         setOperations.add(userDevicesKey, deviceId);
     }
-
-//    public boolean isExit(String userId, String deviceId) {
-//        Jedis jedis = mJedisPool.getResource();
-//
-//        String deviceKey = getDeviceKey(userId);
-//        return jedis.sismember(deviceKey, deviceId);
-//    }
 }

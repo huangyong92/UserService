@@ -1,4 +1,4 @@
-package user.redis.user;
+package user.redis.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.hash.ObjectHashMapper;
 import org.springframework.stereotype.Component;
 import user.domain.User;
+import user.redis.UserRedis;
 import user.util.BeanUtil;
 
 import javax.annotation.Resource;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class UserRedis {
+public class UserRedisImpl implements UserRedis {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
@@ -96,8 +97,6 @@ public class UserRedis {
     }
 
     public List<User> findUserByName(String name) {
-//        String nameKey = getNickNameListKey(name);
-//        Set<String> set = setOperations.members(nameKey);
         Set<String> set = findIdByName(name);
 
         //todo看看是否有别的办法组织数据，不要遍历
@@ -112,13 +111,22 @@ public class UserRedis {
         return userList;
     }
 
-    public Set<String> findIdByName(String name) {
-        String nameKey = getNickNameListKey(name);
-        return setOperations.members(nameKey);
-    }
-
     public List<User> findUserByCity(String city) {
         Set<String> set = findIdByCity(city);
+
+        List<User> userList = new ArrayList<>();
+        for (String userKey :
+                set) {
+            User user = findUserById(userKey);
+
+            userList.add(user);
+        }
+
+        return userList;
+    }
+
+    public List<User> findUserByTarget(String target) {
+        Set<String> set = findIdByTarget(target);
 
         List<User> userList = new ArrayList<>();
         for (String userKey :
@@ -136,18 +144,9 @@ public class UserRedis {
         return setOperations.members(cityKey);
     }
 
-    public List<User> findUserByTarget(String target) {
-        Set<String> set = findIdByTarget(target);
-
-        List<User> userList = new ArrayList<>();
-        for (String userKey :
-                set) {
-            User user = findUserById(userKey);
-
-            userList.add(user);
-        }
-
-        return userList;
+    protected Set<String> findIdByName(String name) {
+        String nameKey = getNickNameListKey(name);
+        return setOperations.members(nameKey);
     }
 
     public Set<String> findIdByTarget(String target) {

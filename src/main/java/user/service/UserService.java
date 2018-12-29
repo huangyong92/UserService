@@ -16,8 +16,4 @@ public interface UserService {
     User findUserById(String uid) throws IOException;
 
     void updateUser(User user);
-
-//    String getUserIdByPassword(String name, String password);
-//
-//    boolean modifyPassword(String phone, String password);
 }

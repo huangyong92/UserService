@@ -1,25 +1,28 @@
-package user.redis.user;
+package user.redis.impl;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import user.domain.User;
+import user.redis.impl.UserRedisImpl;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserRedisTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class UserRedisImplTest {
 
     @Autowired
-    private UserRedis userRedis;
+    private UserRedisImpl userRedis;
 
     @Test
-    public void saveUser() {
+    public void test1_saveUser() {
         User user = new User();
         user.setUserId("123");
         user.setNickName("小龙");
@@ -32,7 +35,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void updateUser() {
+    public void test4_updateUser() {
         User user = new User();
         user.setUserId("123");
         user.setNickName("小虎");
@@ -43,7 +46,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void findUserById() {
+    public void test2_findUserById() {
         User user = userRedis.findUserById("123");
 
         System.out.println(user);
@@ -51,7 +54,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void findUserByPhone() {
+    public void test3_findUserByPhone() {
         User user = userRedis.findUserByPhone("1234567");
 
         System.out.println(user);
@@ -59,7 +62,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void findIdByName() {
+    public void test5_findIdByName() {
         Set<String> oldIdSet = userRedis.findIdByName("小龙");
         Set<String> idSet = userRedis.findIdByName("小虎");
 
@@ -70,7 +73,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void findIdBycity() {
+    public void test5_findIdBycity() {
         Set<String> idSet = userRedis.findIdByCity("hz");
 
         boolean isExit = idSet.contains("123");
@@ -78,7 +81,7 @@ public class UserRedisTest {
     }
 
     @Test
-    public void findIdByTarget() {
+    public void test5_findIdByTarget() {
         Set<String> idSet = userRedis.findIdByTarget("lose");
 
         boolean isExit = idSet.contains("123");

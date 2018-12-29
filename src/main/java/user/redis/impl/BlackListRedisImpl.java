@@ -1,14 +1,15 @@
-package user.redis.token;
+package user.redis.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Component;
+import user.redis.BlackListRedis;
 
 import javax.annotation.Resource;
 
 @Component
-public class BlackListRedis {
+public class BlackListRedisImpl implements BlackListRedis {
     private static final String BLACK_KEY = "blcak_key";
 
     @Autowired

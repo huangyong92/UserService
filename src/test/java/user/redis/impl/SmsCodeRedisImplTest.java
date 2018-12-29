@@ -1,10 +1,14 @@
-package user.redis.sms;
+package user.redis.impl;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import user.domain.SmsCodeEntity;
+import user.redis.impl.SmsCodeRedisImpl;
 
 import java.util.List;
 import java.util.Random;
@@ -16,16 +20,16 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SmsCodeRedisTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class SmsCodeRedisImplTest {
 
     @Autowired
-    private SmsCodeRedis smsCodeRedis;
+    private SmsCodeRedisImpl smsCodeRedis;
 
     private String mobile = "13575732183";
-    private String smsCode = "555";
 
     @Test
-    public void saveSmsCode() {
+    public void test1_saveSmsCode() {
         try {
             CountDownLatch countDownLatch = new CountDownLatch(30);
             Runnable runnable = new Runnable() {
@@ -55,7 +59,7 @@ public class SmsCodeRedisTest {
     }
 
     @Test
-    public void getSmsCode() {
+    public void test2_getSmsCode() {
         SmsCodeEntity smsCodeEntity = smsCodeRedis.getSmsCode(mobile);
 
         String smsCode = "";
@@ -67,7 +71,7 @@ public class SmsCodeRedisTest {
     }
 
     @Test
-    public void getSmsCodes() {
+    public void test2_getSmsCodes() {
         List<SmsCodeEntity> smsCodeEntities = smsCodeRedis.getOldSmsCodes(mobile, 4);
 
         assertNotNull(smsCodeEntities);
@@ -75,11 +79,11 @@ public class SmsCodeRedisTest {
     }
 
     @Test
-    public void updateSmsCode() {
+    public void test2_updateSmsCode() {
         SmsCodeEntity smsCodeEntity = smsCodeRedis.getSmsCode(mobile);
         long sendTime = smsCodeEntity.getSendTime();
 
-        smsCodeRedis.updateSmsCode(mobile, sendTime, SmsCodeRedis.HasVeriry);
+        smsCodeRedis.updateSmsCode(mobile, sendTime, SmsCodeRedisImpl.HasVeriry);
 
         SmsCodeEntity newSmsCode = smsCodeRedis.getSmsCode(mobile);
         boolean isVeriry = newSmsCode.isVeriry();
