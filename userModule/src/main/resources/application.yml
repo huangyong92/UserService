@@ -1,0 +1,26 @@
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: manual
+    virtual-host: /
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+server:
+  port: 8082
+
+push:
+  appid: wMATht7Bte6Gd0j5puUTOA
+  appkey: sojIl40nKB9zgrMzvwyaN3
+  master_secret: hjk6nH4o2D74khKJ6Bi4I9
+  url: http://sdk.open.api.igexin.com/apiex.htm
+
+sms:
+  account: E105Y2
+  password: eDuM9B
