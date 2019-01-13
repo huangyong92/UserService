@@ -1,4 +1,4 @@
-package vsport.user.domain;
+package vsport.entity;
 
 import lombok.Data;
 

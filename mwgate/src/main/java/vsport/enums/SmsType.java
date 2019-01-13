@@ -1,4 +1,4 @@
-package vsport.user.enums;
+package vsport.enums;
 
 import lombok.Getter;
 

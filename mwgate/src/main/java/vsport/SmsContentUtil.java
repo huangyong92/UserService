@@ -1,9 +1,8 @@
-package vsport.user.util;
+package vsport;
 
 import org.springframework.stereotype.Component;
-import vsport.user.domain.SmsContent;
-import vsport.user.enums.SmsType;
-
+import vsport.entity.SmsContent;
+import vsport.enums.SmsType;
 
 @Component
 public class SmsContentUtil {

@@ -52,11 +52,16 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <!--梦网短信-->
         <dependency>
-            <groupId>mobi.vsport</groupId>
-            <artifactId>montnets.mwgate</artifactId>
+            <groupId>com.vsport</groupId>
+            <artifactId>mwgate</artifactId>
+            <version>1.0.0</version>
         </dependency>
+        <!--梦网短信-->
+        <!--<dependency>-->
+            <!--<groupId>mobi.vsport</groupId>-->
+            <!--<artifactId>montnets.mwgate</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>io.springfox</groupId>

@@ -3,15 +3,15 @@ package vsport.user.service.impl;
 import com.montnets.mwgate.smsutil.SmsSendConn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vsport.SmsContentUtil;
+import vsport.SmsSdk;
+import vsport.entity.SmsContent;
 import vsport.user.domain.SmsCodeEntity;
-import vsport.user.domain.SmsContent;
 import vsport.user.enums.ResultEnum;
 import vsport.user.enums.SmsError;
 import vsport.user.redis.SmsCodeRedis;
 import vsport.user.redis.impl.SmsCodeRedisImpl;
 import vsport.user.service.SmsService;
-import vsport.user.util.SmsContentUtil;
-import vsport.user.util.SmsUtil;
 import vsport.user.util.TimeUtil;
 
 import java.util.Date;
@@ -31,7 +31,7 @@ public class SmsImpl implements SmsService {
     private SmsCodeRedis mSmsCodeRedis;
 
     @Autowired
-    private SmsUtil mSmsUtil;
+    private SmsSdk smsSdk;
 
     @Autowired
     private TimeUtil mTimeUtil;
@@ -41,7 +41,7 @@ public class SmsImpl implements SmsService {
     @Override
     public int sendSmsCode(String mobile, int smsType) {
         synchronized (mobile) {
-            //todo 错误处理后续还要重构的
+            //todo 错误处理后续还要重构的,需要做日志不然都不知道发生了什么
             if (isDayLimit(mobile)) {
                 return 0;
             }
@@ -93,8 +93,9 @@ public class SmsImpl implements SmsService {
             return ResultEnum.SMS_TYPE_ERROR.getCode();
         }
 
-        SmsSendConn smsSendConn = mSmsUtil.getSmsSendConn();
-        int result = mSmsUtil.sigleSend(smsSendConn, mobile, smsContent.getContent());
+        SmsSendConn smsSendConn = smsSdk.getSmsSendConn();
+        int result = smsSdk.sigleSend(smsSendConn, mobile, smsContent.getContent());
+        //todo 错误处理耦合度太高
         if (result == SmsError.MOBILE_ERROR.getCode()) {
             return ResultEnum.SMS_MOBILE_ERROR.getCode();
         } else if (result < 0) {
@@ -143,8 +144,8 @@ public class SmsImpl implements SmsService {
 //            return ResultEnum.SMS_TYPE_ERROR.getCode();
 //        }
 //
-//        SmsSendConn smsSendConn = mSmsUtil.getSmsSendConn();
-//        int result = mSmsUtil.sigleSend(smsSendConn, mobile, smsContent.getContent());
+//        SmsSendConn smsSendConn = smsSdk.getSmsSendConn();
+//        int result = smsSdk.sigleSend(smsSendConn, mobile, smsContent.getContent());
 //        if (result == SmsError.MOBILE_ERROR.getCode()) {
 //            return ResultEnum.SMS_MOBILE_ERROR.getCode();
 //        } else if (result < 0) {

@@ -1,19 +1,20 @@
-package vsport.user.util;
+package vsport.sdk;
 
 import com.montnets.mwgate.common.GlobalParams;
-import com.montnets.mwgate.smsutil.ConfigManager;
 import com.montnets.mwgate.common.Message;
+import com.montnets.mwgate.smsutil.ConfigManager;
 import com.montnets.mwgate.smsutil.SmsSendConn;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import vsport.SmsSdk;
 
 import javax.annotation.PostConstruct;
 
 @Component
 @ConfigurationProperties(prefix = "sms")
 @Setter
-public class SmsUtil {
+public class SmsSdkImpl implements SmsSdk{
 
     private SmsSendConn mSmsSendConn;
 
@@ -27,7 +28,7 @@ public class SmsUtil {
         setAccount(account, password);
     }
 
-    public void configSms() {
+    private void configSms() {
         // 创建全局参数
         GlobalParams globalParams = new GlobalParams();
         // 设置请求路径
@@ -43,7 +44,7 @@ public class SmsUtil {
         mSmsSendConn = new SmsSendConn(isKeepAlive);
     }
 
-    public void setAccount(String userid, String password) {
+    private void setAccount(String userid, String password) {
         // 发送优先级
         int priority = 1;
         // 主IP信息
